@@ -1,4 +1,4 @@
-#include <windows.h>
+﻿#include <windows.h>
 
 __declspec(dllexport) VOID WINAPI AlphaBlt(
     HDC hdcDest, int xDest, int yDest, int nWidth, int nHeight,

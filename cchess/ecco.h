@@ -1,4 +1,4 @@
-#ifndef ECCO_H
+﻿#ifndef ECCO_H
 #define ECCO_H
 
 #ifdef _WIN32

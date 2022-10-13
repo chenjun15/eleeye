@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 cchess.h/cchess.cpp - Source Code for ElephantEye, Additional Part
 
 ElephantEye - a Chinese Chess Program (UCCI Engine)
@@ -38,15 +38,15 @@ uint64_t File2Chin(uint32_t dwFileStr, int sdPlayer);
 int File2Move(uint32_t dwFileStr, const PositionStruct &pos);
 uint32_t Move2File(int mv, const PositionStruct &pos);
 
-// ÒÔÏÂ³£Á¿¹æ¶¨ÁË"TryMove()"µÄ·µ»Ø×´Ì¬
-const int MOVE_ILLEGAL = 256;       // ²»ºÏ·¨µÄ×Å·¨
-const int MOVE_INCHECK = 128;       // Òò½«¾ü¶ø²»ºÏ·¨µÄ×Å·¨
-const int MOVE_DRAW = 64;           // ºÍÆå×Å·¨(ÈÔ±»Àí½âÎªºÏ·¨µÄ£¬ÏÂÍ¬)
-const int MOVE_PERPETUAL_LOSS = 32; // ³¤´òµÄÖØ¸´×Å·¨
-const int MOVE_PERPETUAL_WIN = 16;  // ¶Ô·½³¤´òµÄÖØ¸´×Å·¨
-const int MOVE_PERPETUAL = 8;       // ÖØ¸´Èı´ÎµÄ×Å·¨
-const int MOVE_MATE = 4;            // ½«ËÀ(°üÀ¨À§±Ğ)
-const int MOVE_CHECK = 2;           // ½«¾ü
-const int MOVE_CAPTURE = 1;         // ³Ô×Ó
+// ä»¥ä¸‹å¸¸é‡è§„å®šäº†"TryMove()"çš„è¿”å›çŠ¶æ€
+const int MOVE_ILLEGAL = 256;       // ä¸åˆæ³•çš„ç€æ³•
+const int MOVE_INCHECK = 128;       // å› å°†å†›è€Œä¸åˆæ³•çš„ç€æ³•
+const int MOVE_DRAW = 64;           // å’Œæ£‹ç€æ³•(ä»è¢«ç†è§£ä¸ºåˆæ³•çš„ï¼Œä¸‹åŒ)
+const int MOVE_PERPETUAL_LOSS = 32; // é•¿æ‰“çš„é‡å¤ç€æ³•
+const int MOVE_PERPETUAL_WIN = 16;  // å¯¹æ–¹é•¿æ‰“çš„é‡å¤ç€æ³•
+const int MOVE_PERPETUAL = 8;       // é‡å¤ä¸‰æ¬¡çš„ç€æ³•
+const int MOVE_MATE = 4;            // å°†æ­»(åŒ…æ‹¬å›°æ¯™)
+const int MOVE_CHECK = 2;           // å°†å†›
+const int MOVE_CAPTURE = 1;         // åƒå­
 
 #endif

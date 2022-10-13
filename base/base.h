@@ -1,4 +1,4 @@
-#include <assert.h>
+﻿#include <assert.h>
 #include <sys/timeb.h>
 
 #ifndef BASE_H

@@ -1,4 +1,4 @@
-/*
+﻿/*
 FEN->BMP Convertor - a Bitmap Generation Program for Chess and Chinese Chess
 Designed by Morning Yellow, Version: 1.1, Last Modified: Feb. 2006
 Copyright (C) 2004-2006 www.elephantbase.net

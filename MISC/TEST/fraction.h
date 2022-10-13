@@ -1,4 +1,4 @@
-#ifndef FRACTION_H
+﻿#ifndef FRACTION_H
 #define FRACTION_H
 
 const bool SKIP_REDUCE = true;

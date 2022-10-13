@@ -1,4 +1,4 @@
-#include "../../base/base.h"
+﻿#include "../../base/base.h"
 #include "matrix.h"
 
 Matrix Matrix::DelRowCol(int nRowStart, int nRowLen, int nColStart, int nColLen) const {

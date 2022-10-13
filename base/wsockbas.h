@@ -1,4 +1,4 @@
-#ifndef WSOCKBAS_H
+﻿#ifndef WSOCKBAS_H
 #define WSOCKBAS_H
 
 #ifdef _WIN32

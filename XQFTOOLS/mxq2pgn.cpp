@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 MXQ->PGN Convertor - a Chinese Chess Score Convertion Program
 Designed by Morning Yellow, Version: 3.14, Last Modified: Jun. 2008
 Copyright (C) 2004-2008 www.elephantbase.net
@@ -63,19 +63,19 @@ int Mxq2Pgn(const char *szMxqFile, const char *szPgnFile, const EccoApiStruct &E
   ReadRecord(fp, pgn.szEvent);
   lpEvent = pgn.szEvent;
   if (false) {
-  } else if (StrScanSkip(lpEvent, "-Ê¤-")) {
+  } else if (StrScanSkip(lpEvent, "-èƒœ-")) {
     pgn.nResult = 1;
-  } else if (StrScanSkip(lpEvent, "-Ð`-")) {
+  } else if (StrScanSkip(lpEvent, "--")) {
     pgn.nResult = 1;
-  } else if (StrScanSkip(lpEvent, "-ºÍ-")) {
+  } else if (StrScanSkip(lpEvent, "-å’Œ-")) {
     pgn.nResult = 2;
-  } else if (StrScanSkip(lpEvent, "-©M-")) {
+  } else if (StrScanSkip(lpEvent, "--")) {
     pgn.nResult = 2;
-  } else if (StrScanSkip(lpEvent, "-¸º-")) {
+  } else if (StrScanSkip(lpEvent, "-è´Ÿ-")) {
     pgn.nResult = 3;
-  } else if (StrScanSkip(lpEvent, "-­t-")) {
+  } else if (StrScanSkip(lpEvent, "--")) {
     pgn.nResult = 3;
-  } else if (StrScanSkip(lpEvent, "-Ø“-")) {
+  } else if (StrScanSkip(lpEvent, "--")) {
     pgn.nResult = 3;
   } else {
     pgn.nResult = 0;
@@ -99,12 +99,12 @@ int Mxq2Pgn(const char *szMxqFile, const char *szPgnFile, const EccoApiStruct &E
   ReadRecord(fp, szRecord);
   while (!StrEqv(szRecord, "Ends") && pgn.nMaxMove < MAX_MOVE_LEN - 1) {
     mv = MOVE(COORD_XY(szRecord[0] - '0' + 3, 'J' - szRecord[1] + 3), COORD_XY(szRecord[3] - '0' + 3, 'J' - szRecord[4] + 3));
-    mv &= 0xffff; // ·ÀÖ¹TryMoveÊ±Êý×éÔ½½ç
+    mv &= 0xffff; // é˜²æ­¢TryMoveæ—¶æ•°ç»„è¶Šç•Œ
     pgn.nMaxMove ++;
     if (pgn.nMaxMove <= 20) {
       dwFileMove[pgn.nMaxMove - 1] = Move2File(mv, pos);
     }
-    // ÞÄÌì¿ÉÄÜÔÊÐí°Ñ½«³Ôµô£¬µ«ElephantEye²»ÔÊÐí£¬ËùÒÔÌø¹ý·Ç·¨×Å·¨
+    // å¼ˆå¤©å¯èƒ½å…è®¸æŠŠå°†åƒæŽ‰ï¼Œä½†ElephantEyeä¸å…è®¸ï¼Œæ‰€ä»¥è·³è¿‡éžæ³•ç€æ³•
     if (TryMove(pos, nStatus, mv)) {
       pgn.wmvMoveTable[pgn.nMaxMove] = mv;
     } else {

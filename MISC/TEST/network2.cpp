@@ -1,4 +1,4 @@
-#include <stdio.h>
+﻿#include <stdio.h>
 #include "matrix.h"
 
 double Network1(int nHeight, int nWidth) {

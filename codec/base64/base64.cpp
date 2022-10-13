@@ -1,4 +1,4 @@
-#ifdef BASE64_DLL
+﻿#ifdef BASE64_DLL
 
 #include <windows.h>
 #include "base64.h"

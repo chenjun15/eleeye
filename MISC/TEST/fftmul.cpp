@@ -1,4 +1,4 @@
-#include <stdio.h>
+﻿#include <stdio.h>
 #include <time.h>
 #include "../../base/base.h"
 #include "../../base/rc4prng.h"

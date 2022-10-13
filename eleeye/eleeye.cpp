@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 eleeye.cpp - Source Code for ElephantEye, Part IX
 
 ElephantEye - a Chinese Chess Program (UCCI Engine)
@@ -20,230 +20,232 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#include <stdio.h>
 #include "../base/base2.h"
 #include "../base/parse.h"
-#include "ucci.h"
-#include "pregen.h"
-#include "position.h"
 #include "hash.h"
+#include "position.h"
+#include "pregen.h"
 #include "search.h"
+#include "ucci.h"
+#include <stdio.h>
 
-const int INTERRUPT_COUNT = 4096; // ËÑË÷Èô¸É½áµãºóµ÷ÓÃÖĞ¶Ï
+const int INTERRUPT_COUNT = 4096; // æœç´¢è‹¥å¹²ç»“ç‚¹åè°ƒç”¨ä¸­æ–­
 
-inline void PrintLn(const char *sz) {
-  printf("%s\n", sz);
-  fflush(stdout);
+inline void PrintLn(const char *sz)
+{
+	printf("%s\n", sz);
+	fflush(stdout);
 }
 
-int main(void) {
-  int i;
-  bool bPonderTime;
-  UcciCommStruct UcciComm;
-  PositionStruct posProbe;
+int main(void)
+{
+	int i;
+	bool bPonderTime;
+	UcciCommStruct UcciComm;
+	PositionStruct posProbe;
 
-  if (BootLine() != UCCI_COMM_UCCI) {
-    return 0;
-  }
-  LocatePath(Search.szBookFile, "BOOK.DAT");
-  bPonderTime = false;
-  PreGenInit();
-  NewHash(24); // 24=16MB, 25=32MB, 26=64MB, ...
-  Search.pos.FromFen(cszStartFen);
-  Search.pos.nDistance = 0;
-  Search.pos.PreEvaluate();
-  Search.nBanMoves = 0;
-  Search.bQuit = Search.bBatch = Search.bDebug = false;
-  Search.bUseHash = Search.bUseBook = Search.bNullMove = Search.bKnowledge = true;
-  Search.bIdle = false;
-  Search.nCountMask = INTERRUPT_COUNT - 1;
-  Search.nRandomMask = 0;
-  Search.rc4Random.InitRand();
-  PrintLn("id name ElephantEye");
-  PrintLn("id version 3.31");
-  PrintLn("id copyright 2004-2016 www.xqbase.com");
-  PrintLn("id author ElephantEye Development Team");
-  PrintLn("id user ElephantEye Test Team");
-  PrintLn("option usemillisec type check default true");
-  PrintLn("option promotion type check default false");
-  PrintLn("option batch type check default false");
-  PrintLn("option debug type check default false");
-  PrintLn("option ponder type check default false");
-  PrintLn("option usehash type check default true");
-  PrintLn("option usebook type check default true");
-  printf("option bookfiles type string default %s\n", Search.szBookFile);
-  fflush(stdout);
-  PrintLn("option hashsize type spin min 16 max 1024 default 16");
-  PrintLn("option idle type combo var none var small var medium var large default none");
-  PrintLn("option pruning type combo var none var small var medium var large default large");
-  PrintLn("option knowledge type combo var none var small var medium var large default large");
-  PrintLn("option randomness type combo var none var tiny var small var medium var large var huge default none");
-  PrintLn("option newgame type button");
-  PrintLn("ucciok");
+	if (BootLine() != UCCI_COMM_UCCI) {
+		return 0;
+	}
+	LocatePath(Search.szBookFile, "BOOK.DAT");
+	bPonderTime = false;
+	PreGenInit();
+	NewHash(24); // 24=16MB, 25=32MB, 26=64MB, ...
+	Search.pos.FromFen(cszStartFen);
+	Search.pos.nDistance = 0;
+	Search.pos.PreEvaluate();
+	Search.nBanMoves = 0;
+	Search.bQuit = Search.bBatch = Search.bDebug = false;
+	Search.bUseHash = Search.bUseBook = Search.bNullMove = Search.bKnowledge = true;
+	Search.bIdle = false;
+	Search.nCountMask = INTERRUPT_COUNT - 1;
+	Search.nRandomMask = 0;
+	Search.rc4Random.InitRand();
+	PrintLn("id name ElephantEye");
+	PrintLn("id version 3.31");
+	PrintLn("id copyright 2004-2016 www.xqbase.com");
+	PrintLn("id author ElephantEye Development Team");
+	PrintLn("id user ElephantEye Test Team");
+	PrintLn("option usemillisec type check default true");
+	PrintLn("option promotion type check default false");
+	PrintLn("option batch type check default false");
+	PrintLn("option debug type check default false");
+	PrintLn("option ponder type check default false");
+	PrintLn("option usehash type check default true");
+	PrintLn("option usebook type check default true");
+	printf("option bookfiles type string default %s\n", Search.szBookFile);
+	fflush(stdout);
+	PrintLn("option hashsize type spin min 16 max 1024 default 16");
+	PrintLn("option idle type combo var none var small var medium var large default none");
+	PrintLn("option pruning type combo var none var small var medium var large default large");
+	PrintLn("option knowledge type combo var none var small var medium var large default large");
+	PrintLn("option randomness type combo var none var tiny var small var medium var large var huge default none");
+	PrintLn("option newgame type button");
+	PrintLn("ucciok");
 
-  // ÒÔÏÂÊÇ½ÓÊÕÖ¸ÁîºÍÌá¹©¶Ô²ßµÄÑ­»·Ìå
-  while (!Search.bQuit) {
-    switch (IdleLine(UcciComm, Search.bDebug)) {
-    case UCCI_COMM_ISREADY:
-      PrintLn("readyok");
-      break;
-    case UCCI_COMM_STOP:
-      PrintLn("nobestmove");
-      break;
-    case UCCI_COMM_POSITION:
-      BuildPos(Search.pos, UcciComm);
-      Search.pos.nDistance = 0;
-      Search.pos.PreEvaluate();
-      Search.nBanMoves = 0;
-      break;
-    case UCCI_COMM_BANMOVES:
-      Search.nBanMoves = UcciComm.nBanMoveNum;
-      for (i = 0; i < UcciComm.nBanMoveNum; i ++) {
-        Search.wmvBanList[i] = COORD_MOVE(UcciComm.lpdwBanMovesCoord[i]);
-      }
-      break;
-    case UCCI_COMM_SETOPTION:
-      switch (UcciComm.Option) {
-      case UCCI_OPTION_PROMOTION:
-        PreEval.bPromotion = UcciComm.bCheck;
-        break;
-      case UCCI_OPTION_BATCH:
-        Search.bBatch = UcciComm.bCheck;
-        break;
-      case UCCI_OPTION_DEBUG:
-        Search.bDebug = UcciComm.bCheck;
-        break;
-      case UCCI_OPTION_PONDER:
-        bPonderTime = UcciComm.bCheck;
-        break;
-      case UCCI_OPTION_USEHASH:
-        Search.bUseHash = UcciComm.bCheck;
-        break;
-      case UCCI_OPTION_USEBOOK:
-        Search.bUseBook = UcciComm.bCheck;
-        break;
-      case UCCI_OPTION_BOOKFILES:
-        if (AbsolutePath(UcciComm.szOption)) {
-          strcpy(Search.szBookFile, UcciComm.szOption);
-        } else {
-          LocatePath(Search.szBookFile, UcciComm.szOption);
-        }
-        break;
-      case UCCI_OPTION_HASHSIZE:
-        DelHash();
-        i = 19; // Ğ¡ÓÚ1£¬·ÖÅä0.5MÖÃ»»±í
-        while (UcciComm.nSpin > 0) {
-          UcciComm.nSpin /= 2;
-          i ++;
-        }
-        NewHash(MAX(i, 24)); // ×îĞ¡µÄÖÃ»»±íÉèÎª16M
-        break;
-      case UCCI_OPTION_IDLE:
-        switch (UcciComm.Grade) {
-        case UCCI_GRADE_NONE:
-          Search.bIdle = false;
-          Search.nCountMask = INTERRUPT_COUNT - 1;
-          break;
-        case UCCI_GRADE_SMALL:
-          Search.bIdle = true;
-          Search.nCountMask = INTERRUPT_COUNT / 4 - 1;
-          break;
-        case UCCI_GRADE_MEDIUM:
-          Search.bIdle = true;
-          Search.nCountMask = INTERRUPT_COUNT / 16 - 1;
-          break;
-        case UCCI_GRADE_LARGE:
-          Search.bIdle = true;
-          Search.nCountMask = INTERRUPT_COUNT / 64 - 1;
-          break;
-        default:
-          break;
-        }
-        break;
-      case UCCI_OPTION_PRUNING:
-        Search.bNullMove = (UcciComm.Grade != UCCI_GRADE_NONE);
-        break;
-      case UCCI_OPTION_KNOWLEDGE:
-        Search.bKnowledge = (UcciComm.Grade != UCCI_GRADE_NONE);
-        break;
-      case UCCI_OPTION_RANDOMNESS:
-        switch (UcciComm.Grade) {
-        case UCCI_GRADE_NONE:
-          Search.nRandomMask = 0;
-          break;
-        case UCCI_GRADE_TINY:
-          Search.nRandomMask = 1;
-          break;
-        case UCCI_GRADE_SMALL:
-          Search.nRandomMask = 3;
-          break;
-        case UCCI_GRADE_MEDIUM:
-          Search.nRandomMask = 7;
-          break;
-        case UCCI_GRADE_LARGE:
-          Search.nRandomMask = 15;
-          break;
-        case UCCI_GRADE_HUGE:
-          Search.nRandomMask = 31;
-          break;
-        default:
-          break;
-        }
-        break;
-      default:
-        break;
-      }
-      break;
-    case UCCI_COMM_GO:
-      Search.bPonder = UcciComm.bPonder;
-      Search.bDraw = UcciComm.bDraw;
-      switch (UcciComm.Go) {
-      case UCCI_GO_DEPTH:
-        Search.nGoMode = GO_MODE_INFINITY;
-        Search.nNodes = 0;
-        SearchMain(UcciComm.nDepth);
-        break;
-      case UCCI_GO_NODES:
-        Search.nGoMode = GO_MODE_NODES;
-        Search.nNodes = UcciComm.nNodes;
-        SearchMain(UCCI_MAX_DEPTH);
-        break;
-      case UCCI_GO_TIME_MOVESTOGO:
-      case UCCI_GO_TIME_INCREMENT:
-        Search.nGoMode = GO_MODE_TIMER;
-        if (UcciComm.Go == UCCI_GO_TIME_MOVESTOGO) {
-          // ¶ÔÓÚÊ±¶ÎÖÆ£¬°ÑÊ£ÓàÊ±¼äÆ½¾ù·ÖÅäµ½Ã¿Ò»²½£¬×÷ÎªÊÊµ±Ê±ÏŞ¡£
-          // Ê£Óà²½Êı´Ó1µ½5£¬×î´óÊ±ÏŞÒÀ´ÎÊÇÊ£ÓàÊ±¼äµÄ100%¡¢90%¡¢80%¡¢70%ºÍ60%£¬5ÒÔÉÏ¶¼ÊÇ50%
-          Search.nProperTimer = UcciComm.nTime / UcciComm.nMovesToGo;
-          Search.nMaxTimer = UcciComm.nTime * MAX(5, 11 - UcciComm.nMovesToGo) / 10;
-        } else {
-          // ¶ÔÓÚ¼ÓÊ±ÖÆ£¬¼ÙÉèÆå¾Ö»áÔÚ20»ØºÏÄÚ½áÊø£¬Ëã³öÆ½¾ùÃ¿Ò»²½µÄÊÊµ±Ê±ÏŞ£¬×î´óÊ±ÏŞÊÇÊ£ÓàÊ±¼äµÄÒ»°ë
-          Search.nProperTimer = UcciComm.nTime / 20 + UcciComm.nIncrement;
-          Search.nMaxTimer = UcciComm.nTime / 2;
-        }
-        // Èç¹ûÊÇºóÌ¨Ë¼¿¼µÄÊ±¼ä·ÖÅä²ßÂÔ£¬ÄÇÃ´ÊÊµ±Ê±ÏŞÉèÎªÔ­À´µÄ1.25±¶
-        Search.nProperTimer += (bPonderTime ? Search.nProperTimer / 4 : 0);
-        Search.nMaxTimer = MIN(Search.nMaxTimer, Search.nProperTimer * 10);
-        SearchMain(UCCI_MAX_DEPTH);
-        break;
-      default:
-        break;
-      }
-      break;
-    case UCCI_COMM_PROBE:
-      BuildPos(posProbe, UcciComm);
-      if (!PopHash(posProbe)) {
-        PopLeaf(posProbe);
-      }
-      break;
-    case UCCI_COMM_QUIT:
-      Search.bQuit = true;
-      break;
-    default:
-      break;
-    }
-  }
-  DelHash();
-  PrintLn("bye");
-  return 0;
+	// ä»¥ä¸‹æ˜¯æ¥æ”¶æŒ‡ä»¤å’Œæä¾›å¯¹ç­–çš„å¾ªç¯ä½“
+	while (!Search.bQuit) {
+		switch (IdleLine(UcciComm, Search.bDebug)) {
+		case UCCI_COMM_ISREADY:
+			PrintLn("readyok");
+			break;
+		case UCCI_COMM_STOP:
+			PrintLn("nobestmove");
+			break;
+		case UCCI_COMM_POSITION:
+			BuildPos(Search.pos, UcciComm);
+			Search.pos.nDistance = 0;
+			Search.pos.PreEvaluate();
+			Search.nBanMoves = 0;
+			break;
+		case UCCI_COMM_BANMOVES:
+			Search.nBanMoves = UcciComm.nBanMoveNum;
+			for (i = 0; i < UcciComm.nBanMoveNum; i++) {
+				Search.wmvBanList[i] = COORD_MOVE(UcciComm.lpdwBanMovesCoord[i]);
+			}
+			break;
+		case UCCI_COMM_SETOPTION:
+			switch (UcciComm.Option) {
+			case UCCI_OPTION_PROMOTION:
+				PreEval.bPromotion = UcciComm.bCheck;
+				break;
+			case UCCI_OPTION_BATCH:
+				Search.bBatch = UcciComm.bCheck;
+				break;
+			case UCCI_OPTION_DEBUG:
+				Search.bDebug = UcciComm.bCheck;
+				break;
+			case UCCI_OPTION_PONDER:
+				bPonderTime = UcciComm.bCheck;
+				break;
+			case UCCI_OPTION_USEHASH:
+				Search.bUseHash = UcciComm.bCheck;
+				break;
+			case UCCI_OPTION_USEBOOK:
+				Search.bUseBook = UcciComm.bCheck;
+				break;
+			case UCCI_OPTION_BOOKFILES:
+				if (AbsolutePath(UcciComm.szOption)) {
+					strcpy(Search.szBookFile, UcciComm.szOption);
+				} else {
+					LocatePath(Search.szBookFile, UcciComm.szOption);
+				}
+				break;
+			case UCCI_OPTION_HASHSIZE:
+				DelHash();
+				i = 19; // å°äº1ï¼Œåˆ†é…0.5Mç½®æ¢è¡¨
+				while (UcciComm.nSpin > 0) {
+					UcciComm.nSpin /= 2;
+					i++;
+				}
+				NewHash(MAX(i, 24)); // æœ€å°çš„ç½®æ¢è¡¨è®¾ä¸º16M
+				break;
+			case UCCI_OPTION_IDLE:
+				switch (UcciComm.Grade) {
+				case UCCI_GRADE_NONE:
+					Search.bIdle = false;
+					Search.nCountMask = INTERRUPT_COUNT - 1;
+					break;
+				case UCCI_GRADE_SMALL:
+					Search.bIdle = true;
+					Search.nCountMask = INTERRUPT_COUNT / 4 - 1;
+					break;
+				case UCCI_GRADE_MEDIUM:
+					Search.bIdle = true;
+					Search.nCountMask = INTERRUPT_COUNT / 16 - 1;
+					break;
+				case UCCI_GRADE_LARGE:
+					Search.bIdle = true;
+					Search.nCountMask = INTERRUPT_COUNT / 64 - 1;
+					break;
+				default:
+					break;
+				}
+				break;
+			case UCCI_OPTION_PRUNING:
+				Search.bNullMove = (UcciComm.Grade != UCCI_GRADE_NONE);
+				break;
+			case UCCI_OPTION_KNOWLEDGE:
+				Search.bKnowledge = (UcciComm.Grade != UCCI_GRADE_NONE);
+				break;
+			case UCCI_OPTION_RANDOMNESS:
+				switch (UcciComm.Grade) {
+				case UCCI_GRADE_NONE:
+					Search.nRandomMask = 0;
+					break;
+				case UCCI_GRADE_TINY:
+					Search.nRandomMask = 1;
+					break;
+				case UCCI_GRADE_SMALL:
+					Search.nRandomMask = 3;
+					break;
+				case UCCI_GRADE_MEDIUM:
+					Search.nRandomMask = 7;
+					break;
+				case UCCI_GRADE_LARGE:
+					Search.nRandomMask = 15;
+					break;
+				case UCCI_GRADE_HUGE:
+					Search.nRandomMask = 31;
+					break;
+				default:
+					break;
+				}
+				break;
+			default:
+				break;
+			}
+			break;
+		case UCCI_COMM_GO:
+			Search.bPonder = UcciComm.bPonder;
+			Search.bDraw = UcciComm.bDraw;
+			switch (UcciComm.Go) {
+			case UCCI_GO_DEPTH:
+				Search.nGoMode = GO_MODE_INFINITY;
+				Search.nNodes = 0;
+				SearchMain(UcciComm.nDepth);
+				break;
+			case UCCI_GO_NODES:
+				Search.nGoMode = GO_MODE_NODES;
+				Search.nNodes = UcciComm.nNodes;
+				SearchMain(UCCI_MAX_DEPTH);
+				break;
+			case UCCI_GO_TIME_MOVESTOGO:
+			case UCCI_GO_TIME_INCREMENT:
+				Search.nGoMode = GO_MODE_TIMER;
+				if (UcciComm.Go == UCCI_GO_TIME_MOVESTOGO) {
+					// å¯¹äºæ—¶æ®µåˆ¶ï¼ŒæŠŠå‰©ä½™æ—¶é—´å¹³å‡åˆ†é…åˆ°æ¯ä¸€æ­¥ï¼Œä½œä¸ºé€‚å½“æ—¶é™ã€‚
+					// å‰©ä½™æ­¥æ•°ä»1åˆ°5ï¼Œæœ€å¤§æ—¶é™ä¾æ¬¡æ˜¯å‰©ä½™æ—¶é—´çš„100%ã€90%ã€80%ã€70%å’Œ60%ï¼Œ5ä»¥ä¸Šéƒ½æ˜¯50%
+					Search.nProperTimer = UcciComm.nTime / UcciComm.nMovesToGo;
+					Search.nMaxTimer = UcciComm.nTime * MAX(5, 11 - UcciComm.nMovesToGo) / 10;
+				} else {
+					// å¯¹äºåŠ æ—¶åˆ¶ï¼Œå‡è®¾æ£‹å±€ä¼šåœ¨20å›åˆå†…ç»“æŸï¼Œç®—å‡ºå¹³å‡æ¯ä¸€æ­¥çš„é€‚å½“æ—¶é™ï¼Œæœ€å¤§æ—¶é™æ˜¯å‰©ä½™æ—¶é—´çš„ä¸€åŠ
+					Search.nProperTimer = UcciComm.nTime / 20 + UcciComm.nIncrement;
+					Search.nMaxTimer = UcciComm.nTime / 2;
+				}
+				// å¦‚æœæ˜¯åå°æ€è€ƒçš„æ—¶é—´åˆ†é…ç­–ç•¥ï¼Œé‚£ä¹ˆé€‚å½“æ—¶é™è®¾ä¸ºåŸæ¥çš„1.25å€
+				Search.nProperTimer += (bPonderTime ? Search.nProperTimer / 4 : 0);
+				Search.nMaxTimer = MIN(Search.nMaxTimer, Search.nProperTimer * 10);
+				SearchMain(UCCI_MAX_DEPTH);
+				break;
+			default:
+				break;
+			}
+			break;
+		case UCCI_COMM_PROBE:
+			BuildPos(posProbe, UcciComm);
+			if (!PopHash(posProbe)) {
+				PopLeaf(posProbe);
+			}
+			break;
+		case UCCI_COMM_QUIT:
+			Search.bQuit = true;
+			break;
+		default:
+			break;
+		}
+	}
+	DelHash();
+	PrintLn("bye");
+	return 0;
 }

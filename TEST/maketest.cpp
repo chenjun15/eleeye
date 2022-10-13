@@ -1,4 +1,4 @@
-/* 
+﻿/* 
 Test-Position Maker - for UCCI-Engines
 Designed by Morning Yellow, Version: 3.1, Last Modified: Nov. 2007
 Copyright (C) 2004-2007 www.elephantbase.net
@@ -60,7 +60,7 @@ static void BuildTestFromFile(const char *szFilePath) {
   uint32_t dwMoveStr;
   char szFen[128];
   char szFileName[MAX_CHAR];
-  char *szResult, *lpSeparator;
+  const char *szResult, *lpSeparator;
   PgnFileStruct pgn;
 
   if (!pgn.Read(szFilePath)) {

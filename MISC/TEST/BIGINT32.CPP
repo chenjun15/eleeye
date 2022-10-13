@@ -1,4 +1,4 @@
-#include <string.h>
+﻿#include <string.h>
 #include "../../base/base.h"
 
 #ifdef _MSC_VER

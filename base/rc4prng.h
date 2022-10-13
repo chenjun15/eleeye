@@ -1,4 +1,4 @@
-#include "base.h"
+﻿#include "base.h"
 #include "x86asm.h"
 
 #ifndef RC4PRNG_H

@@ -1,4 +1,4 @@
-/* 
+ï»¿/* 
 MXQ/XQF/CHE/CHN/CCM->PGN Convertor - a Chinese Chess Score Convertion Program
 Designed by Morning Yellow, Version: 3.15, Last Modified: Oct. 2009
 Copyright (C) 2004-2008 www.elephantbase.net
@@ -143,7 +143,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
   bi.hwndOwner = NULL;
   bi.pidlRoot = NULL;
   bi.pszDisplayName = NULL;
-  bi.lpszTitle = "ÇëÑ¡ÔñÏóÆåÑÝ²¥ÊÒÆåÆ×(*.XQF)¡¢ÞÄÌìÆåÆ×(*.MXQ)¡¢QQÏóÆåÆåÆ×(*.CHE)¡¢ÁªÖÚÏóÆåÆåÆ×(*.CHN)ºÍÖÐÓÎÏóÆåÆåÆ×(*.CCM)ËùÔÚµÄÎÄ¼þ¼Ð";
+  bi.lpszTitle = "è¯·é€‰æ‹©è±¡æ£‹æ¼”æ’­å®¤æ£‹è°±(*.XQF)ã€å¼ˆå¤©æ£‹è°±(*.MXQ)ã€QQè±¡æ£‹æ£‹è°±(*.CHE)ã€è”ä¼—è±¡æ£‹æ£‹è°±(*.CHN)å’Œä¸­æ¸¸è±¡æ£‹æ£‹è°±(*.CCM)æ‰€åœ¨çš„æ–‡ä»¶å¤¹";
   bi.ulFlags = BIF_RETURNONLYFSDIRS;
   bi.lpfn = NULL;
   bi.lParam = NULL;
@@ -156,8 +156,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     EccoApi.Startup(szLibEccoFile);
     SearchFolder(szPath, EccoApi);
     EccoApi.Shutdown();
-    MessageBox(NULL, "ÏóÆåÑÝ²¥ÊÒÆåÆ×(*.XQF)¡¢ÞÄÌìÆåÆ×(*.MXQ)¡¢QQÏóÆåÆåÆ×(*.CHE)¡¢ÁªÖÚÏóÆåÆåÆ×(*.CHN)ºÍÖÐÓÎÏóÆåÆåÆ×(*.CCM)ÒÑÈ«²¿×ª»»Îª¿ÉÒÆÖ²ÆåÆ×(*.PGN)¡£",
-        "ÏóÆåÆåÆ×ÅúÁ¿×ª»»¹¤¾ß", MB_ICONINFORMATION);
+    MessageBox(NULL, "è±¡æ£‹æ¼”æ’­å®¤æ£‹è°±(*.XQF)ã€å¼ˆå¤©æ£‹è°±(*.MXQ)ã€QQè±¡æ£‹æ£‹è°±(*.CHE)ã€è”ä¼—è±¡æ£‹æ£‹è°±(*.CHN)å’Œä¸­æ¸¸è±¡æ£‹æ£‹è°±(*.CCM)å·²å…¨éƒ¨è½¬æ¢ä¸ºå¯ç§»æ¤æ£‹è°±(*.PGN)ã€‚",
+        "è±¡æ£‹æ£‹è°±æ‰¹é‡è½¬æ¢å·¥å…·", MB_ICONINFORMATION);
   }
   return 0;
 }

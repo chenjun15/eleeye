@@ -1,4 +1,4 @@
-/* 
+﻿/* 
 ElephantEye Book Maker - a Chinese Chess Book Maker Program for ElephantEye
 Designed by Morning Yellow, Version: 3.25, Last Modified: Apr. 2011
 Copyright (C) 2004-2011 www.xqbase.com

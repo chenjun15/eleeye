@@ -1,4 +1,4 @@
-#include "../../base/base.h"
+﻿#include "../../base/base.h"
 
 #ifndef BIGINT32_H
 #define BIGINT32_H

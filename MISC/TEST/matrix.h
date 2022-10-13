@@ -1,4 +1,4 @@
-#include <string.h>
+﻿#include <string.h>
 #include "../../base/base.h"
 
 #ifndef MATRIX_H

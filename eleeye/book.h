@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 book.h/book.cpp - Source Code for ElephantEye, Part VI
 
 ElephantEye - a Chinese Chess Program (UCCI Engine)
@@ -66,7 +66,7 @@ struct BookFileStruct {
   }
 };
 
-// »ñÈ¡¿ª¾Ö¿â×Å·¨
+// è·å–å¼€å±€åº“ç€æ³•
 int GetBookMoves(const PositionStruct &pos, const char *szBookFile, BookStruct *lpbks);
 
 #endif
